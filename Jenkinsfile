@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage('prepare') {
             steps {
-                githubNotify(context: 'flash', description: '', status: 'PENDING');
+                githubNotify(context: 'swf', description: '', status: 'PENDING');
                 githubNotify(context: 'js', description: '', status: 'PENDING');
                 sh "haxelib newrepo"
                 sh "haxelib git arp_ci https://github.com/ArpEngine/Arp-ci master --always"
@@ -13,11 +13,14 @@ pipeline {
             }
         }
 
-        stage('flash') {
+        stage('swf') {
             steps {
-                sh "HAXELIB_PATH=`pwd`/.haxelib ARPCI_PROJECT=ArpHitTest ARPCI_TARGET=swf haxelib run arp_ci test"
+                catchError {
+                    sh "HAXELIB_PATH=`pwd`/.haxelib ARPCI_PROJECT=ArpHitTest ARPCI_TARGET=swf haxelib run arp_ci test"
+                }
             }
             post {
+                always { junit(testResults: "bin/junit/swf.xml", keepLongStdio: true); }
                 success { githubNotify(context: "${STAGE_NAME}", description: '', status: 'SUCCESS'); }
                 unsuccessful { githubNotify(context: "${STAGE_NAME}", description: '', status: 'FAILURE'); }
             }
@@ -25,16 +28,15 @@ pipeline {
 
         stage('js') {
             steps {
-                sh "HAXELIB_PATH=`pwd`/.haxelib ARPCI_PROJECT=ArpHitTest ARPCI_TARGET=js haxelib run arp_ci test"
+                catchError {
+                    sh "HAXELIB_PATH=`pwd`/.haxelib ARPCI_PROJECT=ArpHitTest ARPCI_TARGET=js haxelib run arp_ci test"
+                }
             }
             post {
+                always { junit(testResults: "bin/junit/js.xml", keepLongStdio: true); }
                 success { githubNotify(context: "${STAGE_NAME}", description: '', status: 'SUCCESS'); }
                 unsuccessful { githubNotify(context: "${STAGE_NAME}", description: '', status: 'FAILURE'); }
             }
         }
-    }
-
-    post {
-        always { junit(testResults: 'bin/report/*.xml', keepLongStdio: true); }
     }
 }
