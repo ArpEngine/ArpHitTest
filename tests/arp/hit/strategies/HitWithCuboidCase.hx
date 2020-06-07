@@ -21,4 +21,13 @@ class HitWithCuboidCase {
 		assertFalse(me.collides(a, c));
 	}
 
+	public function testContacts() {
+		var a = new HitGeneric().setCuboid(1, 1, 1, 2, 2, 2);
+		var b = new HitGeneric().setCuboid(3, 1, 1, 1, 1, 1);
+		var c = new HitGeneric().setCuboid(5, 1, 1, 1, 1, 1);
+		assertTrue(me.contacts(a, b));
+		assertTrue(me.contacts(b, c));
+		assertFalse(me.contacts(a, c));
+	}
+
 }

@@ -11,4 +11,7 @@ interface IHitField<Hit, T> {
 
 	public function hitTest(callback:(a:T, b:T)->Bool):Void;
 	public function hitRaw(hit:Hit, callback:T->Bool):Void;
+
+	public function contactTest(callback:(a:T, b:T)->Bool):Void;
+	public function contactRaw(hit:Hit, callback:T->Bool):Void;
 }

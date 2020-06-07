@@ -96,6 +96,28 @@ class HitField<Hit, T> implements IHitField<Hit, T> {
 			}
 		}
 	}
+
+	public function contactTest(callback:(a:T, b:T)->Bool):Void {
+		for (i in 0...(this.hitItemsLength - 1)) {
+			var obj:HitItem<Hit, T> = this.hitItems[i];
+			for (j in (i + 1)...hitItemsLength) {
+				var other:HitItem<Hit, T> = this.hitItems[j];
+				if (strategy.contacts(obj.hit, other.hit)) {
+					if (callback(obj.owner, other.owner)) return;
+				}
+			}
+		}
+	}
+
+	public function contactRaw(hit:Hit, callback:T->Bool):Void {
+		for (i in 0...this.hitItemsLength) {
+			var other:HitItem<Hit, T> = this.hitItems[i];
+			if (other.hit == hit) continue;
+			if (strategy.contacts(hit, other.hit)) {
+				if (callback(other.owner)) return;
+			}
+		}
+	}
 }
 
 private class HitItem<Hit, T> {
