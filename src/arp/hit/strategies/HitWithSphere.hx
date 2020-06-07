@@ -18,4 +18,12 @@ class HitWithSphere implements IHitTester<HitSphere> {
 		var dz:Float = a.z - b.z;
 		return (dx * dx + dy * dy + dz * dz) < dr * dr;
 	}
+
+	public function contacts(a:HitSphere, b:HitSphere):Bool {
+		var dr:Float = a.r + b.r;
+		var dx:Float = a.x - b.x;
+		var dy:Float = a.y - b.y;
+		var dz:Float = a.z - b.z;
+		return (dx * dx + dy * dy + dz * dz) <= dr * dr;
+	}
 }

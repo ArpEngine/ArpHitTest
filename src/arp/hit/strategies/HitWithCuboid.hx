@@ -17,4 +17,11 @@ class HitWithCuboid implements IHitTester<HitGeneric> {
 		if (Math.abs(a.z - b.z) >= a.sizeZ + b.sizeZ) return false;
 		return true;
 	}
+
+	public function contacts(a:HitGeneric, b:HitGeneric):Bool {
+		if (Math.abs(a.x - b.x) > a.sizeX + b.sizeX) return false;
+		if (Math.abs(a.y - b.y) > a.sizeY + b.sizeY) return false;
+		if (Math.abs(a.z - b.z) > a.sizeZ + b.sizeZ) return false;
+		return true;
+	}
 }

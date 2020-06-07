@@ -21,4 +21,13 @@ class HitWithSphereCase {
 		assertFalse(me.collides(a, c));
 	}
 
+	public function testContacts() {
+		var a = new HitSphere().setSphere(2, 1, 1, 1);
+		var b = new HitSphere().setSphere(1, 3, 1, 1);
+		var c = new HitSphere().setSphere(1, 5, 1, 1);
+		assertTrue(me.contacts(a, b));
+		assertTrue(me.contacts(b, c));
+		assertFalse(me.contacts(a, c));
+	}
+
 }
